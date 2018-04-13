@@ -10,19 +10,19 @@
 //********************************************************************************************************
 
 // Wifi SSID (the name of your wifi network)
-//const char* ssid = "Skynet(Research)";
-const char* ssid = "Skynet2.4";
+//const char* ssid = "x";
+const char* ssid = "x";
 // Wifi password (the password to access your network)
-//const char* password = "internet";
-const char* password = "Nn4zxvjt6Yvp";
+//const char* password = "x";
+const char* password = "x";
 // The fixed IP address you want for this node (must be unique inside your network - see above note)
-IPAddress ip(192,168,0,49);
+IPAddress ip(x);
 // DNS server IP address (usually the same as your router/gateway but can be another DNS server)
-IPAddress dns(8,8,8,8);
+IPAddress dns(x);
 // Gateway IP address (the address you use to access your router/gateway)
-IPAddress gateway(192,168,0,1);
+IPAddress gateway(x);
 // Subnet mask IP address ()
-IPAddress subnet(255,255,255,0);
+IPAddress subnet(x);
 // Hostname (the name you want to give to this node, must be unique inside your network)
 #define host_name "LeckeMeter"
 
