@@ -84,6 +84,7 @@ char myBuffer[15];                                                              
 
 uint8_t MAC_array[6];                                                           // Variable -
 char MAC_char[18];                                                              // Variable -
+int resetter = 0;
 
 #if TESTING
 float temptimer = 0;
@@ -188,6 +189,7 @@ void handleNotFound(){                                                          
 //************* SETUP WIFI *******************************************************************************
 //********************************************************************************************************
 void setup_wifi() {
+  resetter = 0;  
   delay(20);
 
 /** TELNET **/
@@ -238,13 +240,12 @@ void setup_wifi() {
 //************* READ MQTT TOPIC **************************************************************************
 //********************************************************************************************************
 void callback(char* topic, byte* payload, unsigned int length) {
-  if (runXTimes < N) {                                                          // Read the topic only N times
 
   Serial.println();                                                             // Block space to serial interface
   Debug.println();                                                              // Block space to telnet debug interface
   Serial.print("Message arrived for topic [");                                  // Send text to serial interface
   Debug.printf("Message arrived for topic [");                                  // Send text to telnet debug interface
-  Serial.print(topic); Serial.print("] ");                                      // Send MQTT topic to serial interface
+  Serial.print(topic); Serial.println("] ");                                      // Send MQTT topic to serial interface
   Debug.printf(topic); Debug.printf("] ");                                      // Send MQTT topic to telnet debug interface
 
   String value = "";                                                            // Store MQTT topic inside string
@@ -252,17 +253,21 @@ void callback(char* topic, byte* payload, unsigned int length) {
     value += (char)payload[i];
   }
 
-  kwhReading = value.toFloat();                                                 // Convert kwhReading to float
-
-  Serial.println();                                                             // Block space to serial interface
-  Debug.println();                                                              // Block space to telnet debug interface
-  Serial.print("Payload: "); Serial.println(kwhReading);                        // Send MQTT payload to serial interface
-  Debug.printf("Payload: "); Debug.println(kwhReading);                         // Send MQTT payload to telnet debug interface
-  Serial.println();                                                             // Block space to serial interface
-  Debug.println();                                                              // Block space to telnet debug interface
-
-  runXTimes++;                                                                  // Increase loop count
-  }
+  if (value == "reset") {
+    Serial.println("Resetting Total to 0");
+    kwhReading = 0;
+  } else {
+    if (kwhReading == 0 && runXTimes < N) {
+        kwhReading = value.toFloat();                                                 // Convert kwhReading to float
+        Serial.println();                                                             // Block space to serial interface
+        Debug.println();                                                              // Block space to telnet debug interface
+        Serial.print("Payload: "); Serial.println(kwhReading);                        // Send MQTT payload to serial interface
+        Debug.printf("Payload: "); Debug.println(kwhReading);                         // Send MQTT payload to telnet debug interface
+        Serial.println();                                                             // Block space to serial interface
+        Debug.println();                                                              // Block space to telnet debug interface
+        runXTimes++;                                                                  // Increase loop count
+      }
+    }
 }
 
 //************* RECONNECT MQTT ***************************************************************************
@@ -276,7 +281,10 @@ void reconnect() {
       Serial.println(" connected!");                                            // Send text to serial interface
       Debug.println(" connected!");                                             // Send text to telnet debug interface
       client.subscribe(mqtt_topic_sub_1);                                       // MQTT topic to subscribe
+      resetter = 0;
     } else {
+      resetter += 1;
+      if (resetter >5)setup_wifi();
       Serial.print("failed, rc=");                                              // Send text to serial interface
       Debug.printf("failed, rc=");                                              // Send text to telnet debug interface
       Serial.print(client.state());                                             // Send failure state to serial interface
@@ -302,9 +310,9 @@ void onPulse()
     kwh += 1.0 / (double)PULSE_FACTOR;                                          // Every time there is a pulse, the energy consumption is 1 [pulse] / PULSE_FACTOR [pulses/kWh]
     lastBlink = newBlink;
     pulseCount++;                                                               // Accumulate the energy (it will be initialized again once MQTT message is sent)
-    Serial.print(interval); Serial.print(" | "); Serial.println(kwh);
+//    Serial.print(interval); Serial.print(" | "); Serial.println(kwh);
     Debug.print(interval); Debug.printf(" | "); Debug.println(kwh);
-    Serial.print("Pulse-"); Serial.println(pulseCount);
+//    Serial.print("Pulse-"); Serial.println(pulseCount);
     Debug.printf("Pulse-"); Debug.println(pulseCount);
    }
 

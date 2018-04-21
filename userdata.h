@@ -12,6 +12,7 @@
 // Wifi SSID (the name of your wifi network)
 //const char* ssid = "Skynet(Research)";
 const char* ssid = "Skynet2.4";
+//const char* ssid = "Skynet(Penthouse)";
 // Wifi password (the password to access your network)
 //const char* password = "internet";
 const char* password = "Nn4zxvjt6Yvp";
@@ -24,7 +25,7 @@ IPAddress gateway(192,168,0,1);
 // Subnet mask IP address ()
 IPAddress subnet(255,255,255,0);
 // Hostname (the name you want to give to this node, must be unique inside your network)
-#define host_name "LeckeMeter"
+#define host_name "LeckyMeter"
 
 //************* CONFIG MQTT ******************************************************************************
 // Configurations of your MQTT server -
@@ -61,7 +62,7 @@ const char* mqtt_topic_sub_1 = mqtt_topic_pulse;
 //********************************************************************************************************
 
 // Debounce interval to stop double reading
-int debounce_interval = 50000L;
+int debounce_interval = 100000L;
 // LED_mode set to 1 for reading a flashing LED or 0 for original hardware (however if you need a setting lower than 50000L, you are using TOO much electricity
 boolean LED_mode = 1;
 // Minimum time between send updates.
