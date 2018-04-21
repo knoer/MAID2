@@ -266,6 +266,8 @@ void callback(char* topic, byte* payload, unsigned int length) {
         Serial.println();                                                             // Block space to serial interface
         Debug.println();                                                              // Block space to telnet debug interface
         runXTimes++;                                                                  // Increase loop count
+        client.unsubscribe(mqtt_topic_sub_1);                    // MQTT topic to unsubscribe
+        client.subscribe(mqtt_topic_reset);                    // MQTT topic to subscribe
       }
     }
 }
@@ -280,7 +282,7 @@ void reconnect() {
     if (client.connect(host_name, mqtt_username, mqtt_password)) {              // Connect to MQTT brocker
       Serial.println(" connected!");                                            // Send text to serial interface
       Debug.println(" connected!");                                             // Send text to telnet debug interface
-      client.subscribe(mqtt_topic_sub_1);                                       // MQTT topic to subscribe
+      if (runXTimes < N) client.subscribe(mqtt_topic_sub_1);                    // MQTT topic to subscribe
       resetter = 0;
     } else {
       resetter += 1;
