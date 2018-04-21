@@ -8,7 +8,20 @@ My Changes are:
  * Testing without input
  * Pulse times in Serial and Debug
  * Option for reading LED on meter
+ * Reset Function (See Below)
  * I think that's it
+
+
+ Reset function:
+ Add the following to your automations.yaml (basically send a payload of 'reset' to topic 'ESP_Energy_Meter/pulse' or whatever you have 'mqtt_topic_pulse' set to)
+
+   - service: mqtt.publish
+    data_template:
+      payload: "reset"
+      qos: 0
+      retain: 0
+      topic: ESP_Energy_Meter/pulse
+
 
 Credits:
 
