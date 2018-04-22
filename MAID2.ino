@@ -255,9 +255,11 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
   if (value == "reset") {
     Serial.println("Resetting Total to 0");
+    pulseCount = 0;
     kwhReading = 0;
-  } else {
-    if (kwhReading == 0 && runXTimes < N) {
+   Serial.print("Payload: "); Serial.println(kwhaccum);                        // Send MQTT payload to serial interface
+ } else {
+    if (runXTimes < N) {
         kwhReading = value.toFloat();                                                 // Convert kwhReading to float
         Serial.println();                                                             // Block space to serial interface
         Debug.println();                                                              // Block space to telnet debug interface
@@ -282,7 +284,11 @@ void reconnect() {
     if (client.connect(host_name, mqtt_username, mqtt_password)) {              // Connect to MQTT brocker
       Serial.println(" connected!");                                            // Send text to serial interface
       Debug.println(" connected!");                                             // Send text to telnet debug interface
-      if (runXTimes < N) client.subscribe(mqtt_topic_sub_1);                    // MQTT topic to subscribe
+      if (runXTimes < N) {
+        client.subscribe(mqtt_topic_sub_1);                    // MQTT topic to subscribe
+      } else {
+        client.subscribe(mqtt_topic_reset);
+      }
       resetter = 0;
     } else {
       resetter += 1;
