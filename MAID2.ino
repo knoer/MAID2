@@ -84,7 +84,6 @@ char myBuffer[15];                                                              
 
 uint8_t MAC_array[6];                                                           // Variable -
 char MAC_char[18];                                                              // Variable -
-int resetter = 0;
 
 #if TESTING
 float temptimer = 0;
@@ -189,7 +188,6 @@ void handleNotFound(){                                                          
 //************* SETUP WIFI *******************************************************************************
 //********************************************************************************************************
 void setup_wifi() {
-  resetter = 0;  
   delay(20);
 
 /** TELNET **/
@@ -289,10 +287,7 @@ void reconnect() {
       } else {
         client.subscribe(mqtt_topic_reset);
       }
-      resetter = 0;
     } else {
-      resetter += 1;
-      if (resetter >5)setup_wifi();
       Serial.print("failed, rc=");                                              // Send text to serial interface
       Debug.printf("failed, rc=");                                              // Send text to telnet debug interface
       Serial.print(client.state());                                             // Send failure state to serial interface
