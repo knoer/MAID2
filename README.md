@@ -8,7 +8,6 @@ My Changes are:
  * Testing without input
  * Pulse times in Serial and Debug
  * Option for reading LED on meter
- * Will reconnect the Wifi when MQTT server unreachable on 5 retries
  * Reset Total Function (See Below)
  * I think that's it
 
@@ -16,12 +15,12 @@ My Changes are:
  Reset function:
  Add the following to your automations.yaml (basically send a payload of 'reset' to topic 'ESP_Energy_Meter/reset' or whatever you have 'mqtt_topic_reset' set to)
 
-   - service: mqtt.publish
-    data_template:
-      payload: "reset"
-      qos: 0
-      retain: 0
-      topic: ESP_Energy_Meter/reset
+ *  - service: mqtt.publish
+ *   data_template:
+ *     payload: "reset"
+ *     qos: 0
+ *     retain: 0
+ *     topic: ESP_Energy_Meter/reset
 
 
 Credits:
