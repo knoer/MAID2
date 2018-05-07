@@ -56,6 +56,13 @@ const char* mqtt_topic_mac = "ESP_Energy_Meter/mac";
 // MQTT topic to subscribe and get values when node starts
 const char* mqtt_topic_sub_1 = mqtt_topic_pulse;
 
+//**************Arduino OTA************************************************************************************
+// Configuration of your OTA
+//********************************************************************************************************
+
+int OTAport = 5353;
+const char* OTApassword = "password";
+
 //**************My Stuff******************************************************************************************
 // Debounce is set to 50000L, if using original hardware, change to 10000L and LED_mode = 0
 //********************************************************************************************************
